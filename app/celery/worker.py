@@ -16,18 +16,7 @@ def create_task(task_type):
     time.sleep(int(task_type) * 10)
     return True
 
-# @celery_app.task(name="ingestion_file")
-# def file_ingestion():
-#     file_path= "/home/ubuntu/cka_celery/app/celery/AMZN-Q3-2023-Earnings-Release.pdf"
-#     text_index_name="basic_chunk_text_data"
-#     img_index_name="imgfromdoc"
-#     semantic_index_name="smttextdata"
-#     category="awsdata"
-#     sub_category="awsbasics"
-#     filename=file_path.split('\\')[-1]
-#     file_url=f"{config.S3_BUCKET_NAME}+tmpFiles/{filename}"
-#     ingestion = Ingestion()
-#     ingestion.create_and_add_embeddings(file_path, text_index_name, img_index_name,semantic_index_name, category, sub_category, file_url)
+
 
 @celery_app.task(name="image_extraction")
 def extract_images_from_pdf():
