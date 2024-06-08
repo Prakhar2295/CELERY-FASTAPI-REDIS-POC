@@ -1,0 +1,30 @@
+from fastapi import FastAPI, Body
+from .celery.worker import create_task,extract_images_from_pdf
+from fastapi.responses import JSONResponse
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+@app.post("/tasks", status_code=201)
+def run_task(payload = Body(...)):
+    task_type = payload["type"]
+    task = create_task.delay(int(task_type))
+    return JSONResponse({"task_id": task.id})
+
+# @app.post("/ingestion",status_code=201)
+# def ingestion_task():
+#     task = file_ingestion.delay()
+#     return JSONResponse({"task_id": task.id})
+
+@app.post("/extraction",status_code=201)
+def image_extraction_task():
+    task = extract_images_from_pdf.delay()
+    return JSONResponse({"task_id": task.id})
+
+
+
+
+
